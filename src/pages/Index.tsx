@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Shield, Award, CheckCircle, Truck, Headphones, RefreshCw,
   Star, MapPin, Clock, Phone, Instagram, MessageCircle,
   ChevronRight, Smartphone, ArrowRight, Menu, X
 } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getProducts, type Product } from "@/lib/products";
 
 const WHATSAPP_NUMBER = "5584999999999";
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -29,15 +29,7 @@ function useScrollReveal() {
   return ref;
 }
 
-// ─── Products data ───
-const products = [
-  { model: "iPhone 16 Pro Max", price: "R$ 9.499", condition: "Novo", storage: "256GB" },
-  { model: "iPhone 16 Pro", price: "R$ 8.299", condition: "Novo", storage: "128GB" },
-  { model: "iPhone 15 Pro Max", price: "R$ 7.499", condition: "Seminovo", storage: "256GB" },
-  { model: "iPhone 15 Pro", price: "R$ 6.299", condition: "Seminovo", storage: "128GB" },
-  { model: "iPhone 15", price: "R$ 4.999", condition: "Novo", storage: "128GB" },
-  { model: "iPhone 14", price: "R$ 3.799", condition: "Seminovo", storage: "128GB" },
-];
+// Products loaded from shared store
 
 const testimonials = [
   { name: "Carlos M.", text: "Comprei meu iPhone 15 Pro e chegou perfeito! Atendimento nota 10.", rating: 5 },
@@ -157,6 +149,7 @@ function TrustSection() {
 // ─── Products ───
 function ProductsSection() {
   const ref = useScrollReveal();
+  const products = getProducts();
   return (
     <section id="produtos" className="py-20 bg-secondary" ref={ref}>
       <div className="container mx-auto px-4">
@@ -168,20 +161,18 @@ function ProductsSection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {products.map((p) => (
-            <div key={p.model} className="group bg-card rounded-xl border border-border hover:border-gold/40 transition-all hover:shadow-lg hover:shadow-gold/5 overflow-hidden">
-              <div className="aspect-square bg-gradient-to-br from-muted to-card flex items-center justify-center p-8">
-                <Smartphone className="h-24 w-24 text-muted-foreground/30 group-hover:text-gold/40 transition-colors" />
+            <div key={p.id} className="group bg-card rounded-xl border border-border hover:border-gold/40 transition-all hover:shadow-lg hover:shadow-gold/5 overflow-hidden">
+              <div className="aspect-square bg-gradient-to-br from-muted to-card flex items-center justify-center p-8 overflow-hidden">
+                {p.image ? (
+                  <img src={p.image} alt={p.model} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                ) : (
+                  <Smartphone className="h-24 w-24 text-muted-foreground/30 group-hover:text-gold/40 transition-colors" />
+                )}
               </div>
-              <div className="p-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${p.condition === "Novo" ? "bg-gold/10 text-gold" : "bg-muted text-muted-foreground"}`}>
-                    {p.condition}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{p.storage}</span>
-                </div>
+              <div className="p-5 text-center">
                 <h3 className="font-bold text-lg text-foreground mb-1">{p.model}</h3>
-                <p className="text-2xl font-bold text-gold mb-4">{p.price}</p>
-                <a href={whatsappMsg(`Olá! Tenho interesse no ${p.model} (${p.condition}) por ${p.price}. Podemos negociar?`)} target="_blank" rel="noopener noreferrer">
+                <p className="text-sm text-muted-foreground mb-4">{p.storage}</p>
+                <a href={whatsappMsg(`Olá! Tenho interesse no ${p.model} ${p.storage}. Podemos negociar?`)} target="_blank" rel="noopener noreferrer">
                   <Button className="w-full bg-gold text-dark-deep hover:bg-gold-light font-semibold">
                     Quero esse <ArrowRight className="h-4 w-4 ml-1" />
                   </Button>
