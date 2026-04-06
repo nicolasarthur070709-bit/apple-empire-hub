@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Shield, Award, CheckCircle, Truck, Headphones, RefreshCw,
   Star, MapPin, Clock, Phone, Instagram, MessageCircle,
   ChevronRight, Smartphone, ArrowRight, Menu, X
 } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getProducts, type Product } from "@/lib/products";
 
 const WHATSAPP_NUMBER = "5584999999999";
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
