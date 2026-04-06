@@ -1,16 +1,438 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useRef } from "react";
+import {
+  Shield, Award, CheckCircle, Truck, Headphones, RefreshCw,
+  Star, MapPin, Clock, Phone, Instagram, MessageCircle,
+  ChevronRight, Smartphone, ArrowRight, Menu, X
+} from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const WHATSAPP_NUMBER = "5584999999999";
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
+const whatsappMsg = (msg: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+// ─── Scroll animation hook ───
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { el.classList.add("animate-fade-in-up"); obs.unobserve(el); } },
+      { threshold: 0.15 }
+    );
+    el.style.opacity = "0";
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+// ─── Products data ───
+const products = [
+  { model: "iPhone 16 Pro Max", price: "R$ 9.499", condition: "Novo", storage: "256GB" },
+  { model: "iPhone 16 Pro", price: "R$ 8.299", condition: "Novo", storage: "128GB" },
+  { model: "iPhone 15 Pro Max", price: "R$ 7.499", condition: "Seminovo", storage: "256GB" },
+  { model: "iPhone 15 Pro", price: "R$ 6.299", condition: "Seminovo", storage: "128GB" },
+  { model: "iPhone 15", price: "R$ 4.999", condition: "Novo", storage: "128GB" },
+  { model: "iPhone 14", price: "R$ 3.799", condition: "Seminovo", storage: "128GB" },
+];
+
+const testimonials = [
+  { name: "Carlos M.", text: "Comprei meu iPhone 15 Pro e chegou perfeito! Atendimento nota 10.", rating: 5 },
+  { name: "Ana P.", text: "Melhor preço que encontrei. Aparelho impecável, parecia novo!", rating: 5 },
+  { name: "Rafael S.", text: "Troquei meu iPhone antigo e saiu muito em conta. Super recomendo!", rating: 5 },
+  { name: "Juliana L.", text: "Entrega super rápida e garantia de verdade. Voltarei a comprar!", rating: 5 },
+];
+
+// ─── Header ───
+function Header() {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-dark-deep/95 backdrop-blur-md border-b border-foreground/10">
+      <div className="container mx-auto flex items-center justify-between h-16 px-4">
+        <a href="#" className="flex items-center gap-2">
+          <Smartphone className="h-6 w-6 text-gold" />
+          <span className="text-lg font-bold tracking-tight text-primary-foreground">
+            Império <span className="text-gold">Apple</span>
+          </span>
+        </a>
+        <nav className="hidden md:flex items-center gap-6 text-sm text-primary-foreground/70">
+          {[["Produtos", "#produtos"], ["Diferenciais", "#diferenciais"], ["Troque", "#troque"], ["Localização", "#localizacao"]].map(([label, href]) => (
+            <a key={href} href={href} className="hover:text-gold transition-colors">{label}</a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-3">
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" className="hidden sm:inline-flex bg-gold text-dark-deep hover:bg-gold-light font-semibold">
+              <MessageCircle className="h-4 w-4 mr-1" /> WhatsApp
+            </Button>
+          </a>
+          <button className="md:hidden text-primary-foreground" onClick={() => setOpen(!open)}>
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <div className="md:hidden bg-dark-deep border-t border-foreground/10 px-4 pb-4 pt-2 space-y-3">
+          {[["Produtos", "#produtos"], ["Diferenciais", "#diferenciais"], ["Troque", "#troque"], ["Localização", "#localizacao"]].map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setOpen(false)} className="block text-primary-foreground/70 hover:text-gold transition-colors">{label}</a>
+          ))}
+        </div>
+      )}
+    </header>
+  );
+}
+
+// ─── Hero ───
+function Hero() {
+  return (
+    <section className="relative min-h-screen flex items-center bg-dark-deep overflow-hidden pt-16">
+      <div className="absolute inset-0 bg-gradient-to-br from-dark-deep via-dark to-dark-deep" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-1.5 mb-8">
+            <Award className="h-4 w-4 text-gold" />
+            <span className="text-sm text-gold font-medium">Loja Premium em Natal/RN</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6">
+            iPhones com qualidade,{" "}
+            <span className="text-gold">procedência</span> e preço justo
+          </h1>
+          <p className="text-lg sm:text-xl text-primary-foreground/60 mb-10 max-w-xl mx-auto">
+            Novos e seminovos com garantia e confiança total. Os melhores preços do RN, direto para você.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="w-full sm:w-auto bg-gold text-dark-deep hover:bg-gold-light font-bold text-base px-8 py-6 shadow-lg shadow-gold/20">
+                <MessageCircle className="h-5 w-5 mr-2" /> Falar no WhatsApp
+              </Button>
+            </a>
+            <a href="#produtos">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 font-semibold px-8 py-6">
+                Ver iPhones <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Trust ───
+function TrustSection() {
+  const ref = useScrollReveal();
+  const stats = [
+    { icon: Shield, label: "Garantia em todos os aparelhos" },
+    { icon: Award, label: "Procedência comprovada" },
+    { icon: CheckCircle, label: "Segurança na compra" },
+  ];
+  return (
+    <section className="py-20 bg-background" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            Mais de <span className="text-gold">2.000</span> clientes satisfeitos
+          </h2>
+          <p className="text-muted-foreground">Confiança que se comprova em cada venda</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+          {stats.map(({ icon: Icon, label }) => (
+            <div key={label} className="flex flex-col items-center text-center p-6 rounded-xl bg-card border border-border hover:border-gold/30 transition-colors">
+              <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-4">
+                <Icon className="h-7 w-7 text-gold" />
+              </div>
+              <p className="font-semibold text-foreground">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Products ───
+function ProductsSection() {
+  const ref = useScrollReveal();
+  return (
+    <section id="produtos" className="py-20 bg-secondary" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            Nossos <span className="text-gold">iPhones</span>
+          </h2>
+          <p className="text-muted-foreground">Escolha o seu e fale conosco pelo WhatsApp</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {products.map((p) => (
+            <div key={p.model} className="group bg-card rounded-xl border border-border hover:border-gold/40 transition-all hover:shadow-lg hover:shadow-gold/5 overflow-hidden">
+              <div className="aspect-square bg-gradient-to-br from-muted to-card flex items-center justify-center p-8">
+                <Smartphone className="h-24 w-24 text-muted-foreground/30 group-hover:text-gold/40 transition-colors" />
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${p.condition === "Novo" ? "bg-gold/10 text-gold" : "bg-muted text-muted-foreground"}`}>
+                    {p.condition}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{p.storage}</span>
+                </div>
+                <h3 className="font-bold text-lg text-foreground mb-1">{p.model}</h3>
+                <p className="text-2xl font-bold text-gold mb-4">{p.price}</p>
+                <a href={whatsappMsg(`Olá! Tenho interesse no ${p.model} (${p.condition}) por ${p.price}. Podemos negociar?`)} target="_blank" rel="noopener noreferrer">
+                  <Button className="w-full bg-gold text-dark-deep hover:bg-gold-light font-semibold">
+                    Quero esse <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Diferenciais ───
+function DifferentialsSection() {
+  const ref = useScrollReveal();
+  const items = [
+    { icon: Smartphone, title: "Preço competitivo", desc: "Atacado e varejo com os melhores preços do RN" },
+    { icon: CheckCircle, title: "Aparelhos revisados", desc: "Todos testados e aprovados antes da venda" },
+    { icon: Truck, title: "Entrega rápida", desc: "Receba seu iPhone o mais rápido possível" },
+    { icon: Headphones, title: "Suporte personalizado", desc: "Atendimento humano e dedicado a você" },
+    { icon: RefreshCw, title: "Troca facilitada", desc: "Troque seu iPhone antigo por um novo" },
+  ];
+  return (
+    <section id="diferenciais" className="py-20 bg-dark-deep" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-2">
+            Por que escolher a <span className="text-gold">Império Apple</span>?
+          </h2>
+          <p className="text-primary-foreground/50">Diferenciais que fazem a diferença</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {items.map(({ icon: Icon, title, desc }) => (
+            <div key={title} className="p-6 rounded-xl bg-dark border border-primary-foreground/10 hover:border-gold/30 transition-colors">
+              <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-4">
+                <Icon className="h-6 w-6 text-gold" />
+              </div>
+              <h3 className="font-bold text-primary-foreground mb-2">{title}</h3>
+              <p className="text-sm text-primary-foreground/50">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Trade-in ───
+function TradeInSection() {
+  const ref = useScrollReveal();
+  const steps = [
+    { n: "1", title: "Envie os dados", desc: "Nos conte o modelo e estado do seu iPhone atual" },
+    { n: "2", title: "Receba a avaliação", desc: "Avaliamos e informamos o valor de troca" },
+    { n: "3", title: "Faça o upgrade", desc: "Use o valor como desconto no seu iPhone novo" },
+  ];
+  return (
+    <section id="troque" className="py-20 bg-background" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            Troque seu <span className="text-gold">iPhone</span>
+          </h2>
+          <p className="text-muted-foreground">Processo simples, rápido e vantajoso</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto mb-10">
+          {steps.map(({ n, title, desc }) => (
+            <div key={n} className="text-center">
+              <div className="w-14 h-14 rounded-full bg-gold/10 border-2 border-gold/30 flex items-center justify-center mx-auto mb-4">
+                <span className="text-xl font-bold text-gold">{n}</span>
+              </div>
+              <h3 className="font-bold text-foreground mb-1">{title}</h3>
+              <p className="text-sm text-muted-foreground">{desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center">
+          <a href={whatsappMsg("Olá! Gostaria de avaliar meu iPhone para troca.")} target="_blank" rel="noopener noreferrer">
+            <Button size="lg" className="bg-gold text-dark-deep hover:bg-gold-light font-bold px-8 py-6 shadow-lg shadow-gold/20">
+              <RefreshCw className="h-5 w-5 mr-2" /> Avaliar meu iPhone
+            </Button>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Testimonials ───
+function TestimonialsSection() {
+  const ref = useScrollReveal();
+  return (
+    <section className="py-20 bg-secondary" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            O que nossos <span className="text-gold">clientes</span> dizem
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {testimonials.map((t) => (
+            <div key={t.name} className="bg-card rounded-xl border border-border p-6">
+              <div className="flex gap-1 mb-3">
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-gold text-gold" />
+                ))}
+              </div>
+              <p className="text-sm text-foreground/80 mb-4">"{t.text}"</p>
+              <p className="font-semibold text-foreground text-sm">{t.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Location ───
+function LocationSection() {
+  const ref = useScrollReveal();
+  return (
+    <section id="localizacao" className="py-20 bg-background" ref={ref}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            <span className="text-gold">Localização</span>
+          </h2>
+        </div>
+        <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <MapPin className="h-6 w-6 text-gold flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-foreground">Endereço</h3>
+                <p className="text-muted-foreground text-sm">Shopping Seaway – Natal/RN</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <Clock className="h-6 w-6 text-gold flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-foreground">Horário</h3>
+                <p className="text-muted-foreground text-sm">Seg a Sáb: 10h às 21h</p>
+                <p className="text-muted-foreground text-sm">Dom: 14h às 20h</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <Phone className="h-6 w-6 text-gold flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-foreground">Contato</h3>
+                <p className="text-muted-foreground text-sm">WhatsApp: (84) 99999-9999</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-xl overflow-hidden border border-border h-64">
+            <iframe
+              title="Localização Império Apple"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3969.0!2d-35.19!3d-5.84!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwNTAnMjQuMCJTIDM1wrAxMSc0Mi4wIlc!5e0!3m2!1spt-BR!2sbr!4v1"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Final CTA ───
+function FinalCTA() {
+  const ref = useScrollReveal();
+  return (
+    <section className="py-24 bg-dark-deep relative overflow-hidden" ref={ref}>
+      <div className="absolute inset-0 bg-gradient-to-r from-gold/5 via-transparent to-gold/5" />
+      <div className="container mx-auto px-4 text-center relative z-10">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
+          Garanta já o seu iPhone com <span className="text-gold">segurança</span>
+        </h2>
+        <p className="text-primary-foreground/50 text-lg mb-10 max-w-xl mx-auto">
+          Preço que cabe no bolso, confiança que não tem preço. Fale com a gente agora.
+        </p>
+        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+          <Button size="lg" className="bg-gold text-dark-deep hover:bg-gold-light font-bold text-lg px-10 py-7 shadow-xl shadow-gold/20">
+            <MessageCircle className="h-6 w-6 mr-2" /> Falar no WhatsApp agora
+          </Button>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+// ─── Footer ───
+function Footer() {
+  return (
+    <footer className="py-10 bg-dark border-t border-foreground/10">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <Smartphone className="h-5 w-5 text-gold" />
+            <span className="font-bold text-primary-foreground">
+              Império <span className="text-gold">Apple</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
+              <Instagram className="h-5 w-5" />
+            </a>
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
+              <MessageCircle className="h-5 w-5" />
+            </a>
+          </div>
+          <p className="text-xs text-primary-foreground/30">© 2026 Império Apple. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ─── Floating WhatsApp ───
+function FloatingWhatsApp() {
+  return (
+    <a
+      href={WHATSAPP_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:scale-110 transition-transform"
+      aria-label="WhatsApp"
+    >
+      <MessageCircle className="h-7 w-7 text-primary-foreground" />
+    </a>
+  );
+}
+
+// ─── Main ───
+export default function Index() {
+  return (
+    <div className="min-h-screen">
+      <Header />
+      <Hero />
+      <TrustSection />
+      <ProductsSection />
+      <DifferentialsSection />
+      <TradeInSection />
+      <TestimonialsSection />
+      <LocationSection />
+      <FinalCTA />
+      <Footer />
+      <FloatingWhatsApp />
     </div>
   );
-};
-
-const Index = PlaceholderIndex;
-
-export default Index;
+}
