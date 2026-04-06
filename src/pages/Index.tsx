@@ -29,15 +29,7 @@ function useScrollReveal() {
   return ref;
 }
 
-// ─── Products data ───
-const products = [
-  { model: "iPhone 16 Pro Max", price: "R$ 9.499", condition: "Novo", storage: "256GB" },
-  { model: "iPhone 16 Pro", price: "R$ 8.299", condition: "Novo", storage: "128GB" },
-  { model: "iPhone 15 Pro Max", price: "R$ 7.499", condition: "Seminovo", storage: "256GB" },
-  { model: "iPhone 15 Pro", price: "R$ 6.299", condition: "Seminovo", storage: "128GB" },
-  { model: "iPhone 15", price: "R$ 4.999", condition: "Novo", storage: "128GB" },
-  { model: "iPhone 14", price: "R$ 3.799", condition: "Seminovo", storage: "128GB" },
-];
+// Products loaded from shared store
 
 const testimonials = [
   { name: "Carlos M.", text: "Comprei meu iPhone 15 Pro e chegou perfeito! Atendimento nota 10.", rating: 5 },
