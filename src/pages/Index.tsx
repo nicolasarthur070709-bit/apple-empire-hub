@@ -7,10 +7,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { getProducts, type Product } from "@/lib/products";
 
-const WHATSAPP_NUMBER = "5584999999999";
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
-const whatsappMsg = (msg: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+const WHATSAPP_NUMBER = "5584996727199";
+const WHATSAPP_LINK = "https://l.instagram.com/?u=https%3A%2F%2Fwa.link%2Fkpxson%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGn2dhWrJNwddkkKX-3U8BELAEus05emWHVp-L4WM_hS53b0yIBqaoNQNFb3LA_aem_wSPbuOrZezmdu1cOVwo_TA&e=AT42wlwyeY47c9FqT7rta1AnnRiK4hYiSHlYnoxwqc3rMkA1g7HqT0VPIbjnoc_7QkhcNbuZAuTTiwrL_DPkYyejIVNvjfdzPcy_s7D_QALaRiOcm70JcqrcUg";
+const whatsappMsg = (_msg: string) => WHATSAPP_LINK;
 
 // ─── Scroll animation hook ───
 function useScrollReveal() {
@@ -272,7 +271,7 @@ function LocationSection() {
               <Phone className="h-6 w-6 text-gold flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="font-bold text-foreground">Contato</h3>
-                <p className="text-muted-foreground text-sm">WhatsApp: (84) 99999-9999</p>
+                <p className="text-muted-foreground text-sm">WhatsApp: (84) 99672-7199</p>
               </div>
             </div>
           </div>
