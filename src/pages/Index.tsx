@@ -40,39 +40,20 @@ const testimonials = [
 
 // ─── Header ───
 function Header() {
-  const [open, setOpen] = useState(false);
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-dark-deep/95 backdrop-blur-md border-b border-foreground/10">
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <a href="#" className="flex items-center gap-2">
-          <Smartphone className="h-6 w-6 text-gold" />
-          <span className="text-lg font-bold tracking-tight text-primary-foreground">
-            Império <span className="text-gold">Apple</span>
-          </span>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-dark-deep border-b border-foreground/10 transition-all shadow-md">
+      <div className="container mx-auto flex items-center justify-between py-2 min-h-[5.5rem] md:min-h-[6.5rem] px-4">
+        <a href="#" className="flex items-center">
+          <img src="/logo.png" alt="Império Apple" className="h-20 md:h-24 w-auto mix-blend-screen object-contain -ml-2" />
         </a>
-        <nav className="hidden md:flex items-center gap-6 text-sm text-primary-foreground/70">
-          {[["Produtos", "#produtos"], ["Diferenciais", "#diferenciais"], ["Troque", "#troque"], ["Localização", "#localizacao"]].map(([label, href]) => (
-            <a key={href} href={href} className="hover:text-gold transition-colors">{label}</a>
-          ))}
-        </nav>
         <div className="flex items-center gap-3">
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" className="hidden sm:inline-flex bg-gold text-dark-deep hover:bg-gold-light font-semibold">
-              <MessageCircle className="h-4 w-4 mr-1" /> WhatsApp
+            <Button size="sm" className="bg-gold text-dark-deep hover:bg-gold-light font-semibold">
+              <MessageCircle className="h-4 w-4 mr-1 md:mr-2" /> <span className="hidden sm:inline">WhatsApp</span>
             </Button>
           </a>
-          <button className="md:hidden text-primary-foreground" onClick={() => setOpen(!open)}>
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
         </div>
       </div>
-      {open && (
-        <div className="md:hidden bg-dark-deep border-t border-foreground/10 px-4 pb-4 pt-2 space-y-3">
-          {[["Produtos", "#produtos"], ["Diferenciais", "#diferenciais"], ["Troque", "#troque"], ["Localização", "#localizacao"]].map(([label, href]) => (
-            <a key={href} href={href} onClick={() => setOpen(false)} className="block text-primary-foreground/70 hover:text-gold transition-colors">{label}</a>
-          ))}
-        </div>
-      )}
     </header>
   );
 }
@@ -80,9 +61,13 @@ function Header() {
 // ─── Hero ───
 function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center bg-dark-deep overflow-hidden pt-16">
-      <div className="absolute inset-0 bg-gradient-to-br from-dark-deep via-dark to-dark-deep" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl" />
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-16 bg-dark-deep">
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-[6px] scale-105"
+        style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-dark-deep/70 bg-gradient-to-t from-dark-deep via-dark-deep/60 to-dark-deep/80" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl pointer-events-none" />
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-1.5 mb-8">
@@ -193,7 +178,6 @@ function DifferentialsSection() {
     { icon: Smartphone, title: "Preço competitivo", desc: "Atacado e varejo com os melhores preços do RN" },
     { icon: CheckCircle, title: "Aparelhos revisados", desc: "Todos testados e aprovados antes da venda" },
     { icon: Truck, title: "Entrega rápida", desc: "Receba seu iPhone o mais rápido possível" },
-    { icon: Headphones, title: "Suporte personalizado", desc: "Atendimento humano e dedicado a você" },
     { icon: RefreshCw, title: "Troca facilitada", desc: "Troque seu iPhone antigo por um novo" },
   ];
   return (
@@ -207,7 +191,7 @@ function DifferentialsSection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {items.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="p-6 rounded-xl bg-dark border border-primary-foreground/10 hover:border-gold/30 transition-colors">
+            <div key={title} className={`p-6 rounded-xl bg-dark border border-primary-foreground/10 hover:border-gold/30 transition-colors ${title === "Troca facilitada" ? "lg:col-start-2" : ""}`}>
               <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-4">
                 <Icon className="h-6 w-6 text-gold" />
               </div>
@@ -373,11 +357,8 @@ function Footer() {
     <footer className="py-10 bg-dark border-t border-foreground/10">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <Smartphone className="h-5 w-5 text-gold" />
-            <span className="font-bold text-primary-foreground">
-              Império <span className="text-gold">Apple</span>
-            </span>
+          <div className="flex items-center">
+            <img src="/logo.png" alt="Império Apple" className="h-24 md:h-28 w-auto mix-blend-screen object-contain" />
           </div>
           <div className="flex items-center gap-4">
             <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
