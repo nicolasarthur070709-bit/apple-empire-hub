@@ -326,7 +326,7 @@ function Footer() {
             <img src="/logo.png" alt="Império Apple" className="h-24 md:h-28 w-auto mix-blend-screen object-contain" />
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
+            <a href="https://www.instagram.com/imperioapplenatal?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
               <Instagram className="h-5 w-5" />
             </a>
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-gold transition-colors">
