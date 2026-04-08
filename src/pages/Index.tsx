@@ -31,12 +31,6 @@ function useScrollReveal() {
 
 // Products loaded from shared store
 
-const testimonials = [
-  { name: "Carlos M.", text: "Comprei meu iPhone 15 Pro e chegou perfeito! Atendimento nota 10.", rating: 5 },
-  { name: "Ana P.", text: "Melhor preço que encontrei. Aparelho impecável, parecia novo!", rating: 5 },
-  { name: "Rafael S.", text: "Troquei meu iPhone antigo e saiu muito em conta. Super recomendo!", rating: 5 },
-  { name: "Juliana L.", text: "Entrega super rápida e garantia de verdade. Voltarei a comprar!", rating: 5 },
-];
 
 // ─── Header ───
 function Header() {
@@ -245,34 +239,6 @@ function TradeInSection() {
   );
 }
 
-// ─── Testimonials ───
-function TestimonialsSection() {
-  const ref = useScrollReveal();
-  return (
-    <section className="py-20 bg-secondary" ref={ref}>
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-            O que nossos <span className="text-gold">clientes</span> dizem
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((t) => (
-            <div key={t.name} className="bg-card rounded-xl border border-border p-6">
-              <div className="flex gap-1 mb-3">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-gold text-gold" />
-                ))}
-              </div>
-              <p className="text-sm text-foreground/80 mb-4">"{t.text}"</p>
-              <p className="font-semibold text-foreground text-sm">{t.name}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // ─── Location ───
 function LocationSection() {
@@ -400,7 +366,6 @@ export default function Index() {
       <ProductsSection />
       <DifferentialsSection />
       <TradeInSection />
-      <TestimonialsSection />
       <LocationSection />
       <FinalCTA />
       <Footer />
