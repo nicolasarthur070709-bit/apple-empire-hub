@@ -35,9 +35,9 @@ function useScrollReveal() {
 function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark-deep border-b border-foreground/10 transition-all shadow-md">
-      <div className="container mx-auto flex items-center justify-between py-2 min-h-[5.5rem] md:min-h-[6.5rem] px-4">
+      <div className="container mx-auto flex items-center justify-between py-2 min-h-[4.5rem] md:min-h-[6.5rem]">
         <a href="#" className="flex items-center">
-          <img src="/logo.png" alt="Império Apple" className="h-20 md:h-24 w-auto mix-blend-screen object-contain -ml-2" />
+          <img src="/logo.png" alt="Império Apple" className="h-14 md:h-24 w-auto mix-blend-screen object-contain -ml-2" />
         </a>
         <div className="flex items-center gap-3">
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
@@ -67,7 +67,7 @@ function Hero() {
             <Award className="h-4 w-4 text-gold" />
             <span className="text-sm text-gold font-medium">Loja Premium em Natal/RN</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6">
             iPhones com qualidade,{" "}
             <span className="text-gold">procedência</span> e preço justo
           </h1>
@@ -81,7 +81,7 @@ function Hero() {
               </Button>
             </a>
             <a href="#produtos">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 font-semibold px-8 py-6">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary-foreground/20 text-dark-deep hover:bg-primary-foreground/10 font-semibold px-8 py-6">
                 Ver iPhones <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </a>
@@ -101,7 +101,7 @@ function TrustSection() {
     { icon: CheckCircle, label: "Segurança na compra" },
   ];
   return (
-    <section className="py-20 bg-background" ref={ref}>
+    <section className="py-12 md:py-20 bg-background" ref={ref}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
@@ -129,7 +129,7 @@ function ProductsSection() {
   const ref = useScrollReveal();
   const products = getProducts();
   return (
-    <section id="produtos" className="py-20 bg-secondary" ref={ref}>
+    <section id="produtos" className="py-12 md:py-20 bg-secondary" ref={ref}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
